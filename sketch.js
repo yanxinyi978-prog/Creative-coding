@@ -1,11 +1,12 @@
+
 let balls = [];
 let music;
 let analyzer;
+let musicStarted = false;
 
 const numberOfBalls = 24;
 
 function preload() {
-
   music = loadSound("beat.mp3");
 }
 
@@ -18,48 +19,19 @@ function setup() {
   canvas.parent("canvas-holder");
 
   describe(
-    "Colourful circles bounce around a dark blue canvas. Their sizes react to music volume. Clicking the canvas changes their colours and speeds."
+    "Colourful circles bounce around a dark blue canvas. Their sizes react to music volume. Clicking the canvas changes their colours and speeds and toggles the music."
   );
 
-  // Analyse the volume of the music.
   analyzer = new p5.Amplitude();
   analyzer.setInput(music);
 
-  // Create the bouncing circles.
   for (let i = 0; i < numberOfBalls; i++) {
     balls.push(new Ball());
   }
-
-  const button = document.getElementById("music-button");
-  const status = document.getElementById("music-status");
-
-  button.addEventListener("click", async function () {
-    try {
-      await userStartAudio();
-
-      if (music.isPlaying()) {
-        music.pause();
-
-        button.textContent = "Play Music";
-        status.textContent = "Music is paused.";
-      } else {
-        music.loop();
-
-        button.textContent = "Pause Music";
-        status.textContent = "Music is playing.";
-      }
-    } catch (error) {
-      status.textContent =
-        "Audio could not start. Please check the music file and try again.";
-
-      console.error("Audio playback error:", error);
-    }
-  });
 }
 
 function draw() {
   background(12, 20, 48);
-
 
   const volume = analyzer.getLevel();
 
@@ -71,26 +43,37 @@ function draw() {
 }
 
 function mousePressed() {
-  
+ 
   if (
-    mouseX >= 0 &&
-    mouseX <= width &&
-    mouseY >= 0 &&
-    mouseY <= height
+    mouseX < 0 ||
+    mouseX > width ||
+    mouseY < 0 ||
+    mouseY > height
   ) {
-    for (let ball of balls) {
-      ball.change();
-    }
+    return;
+  }
+
+ 
+  for (let ball of balls) {
+    ball.change();
+  }
+
+ 
+  userStartAudio();
+
+  if (music.isPlaying()) {
+    music.pause();
+  } else {
+    music.loop();
+    musicStarted = true;
   }
 }
 
 function windowResized() {
-  
   resizeCanvas(
     max(200, windowWidth - 32),
     max(320, windowHeight * 0.55)
   );
-
 
   for (let ball of balls) {
     ball.x = constrain(ball.x, 0, width);
@@ -123,31 +106,14 @@ class Ball {
   bounce() {
     const radius = this.diameter / 2;
 
-    // Bounce against the left and right edges.
-    if (
-      this.x < radius ||
-      this.x > width - radius
-    ) {
+    if (this.x < radius || this.x > width - radius) {
       this.xSpeed *= -1;
-
-      this.x = constrain(
-        this.x,
-        radius,
-        width - radius
-      );
+      this.x = constrain(this.x, radius, width - radius);
     }
 
-    if (
-      this.y < radius ||
-      this.y > height - radius
-    ) {
+    if (this.y < radius || this.y > height - radius) {
       this.ySpeed *= -1;
-
-      this.y = constrain(
-        this.y,
-        radius,
-        height - radius
-      );
+      this.y = constrain(this.y, radius, height - radius);
     }
   }
 
@@ -168,11 +134,9 @@ class Ball {
       random(150, 256)
     );
 
-
     this.xSpeed = random(-5, 5);
     this.ySpeed = random(-5, 5);
 
-   
     if (abs(this.xSpeed) < 1) {
       this.xSpeed = 2;
     }
