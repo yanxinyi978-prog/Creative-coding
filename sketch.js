@@ -1,147 +1,191 @@
-// Define the global variables.
-// The balls variable will contain all the
-// balls in the canvas.
+
 let balls = [];
+let music;
+let analyzer;
 
-// The threshold variable will be used to check
-// if the mobile device has been moved enough to
-// initiate a response.
-let threshold = 30;
+const numberOfBalls = 24;
 
-// accChangeX and accChangeY will measure the acceleration
-// when the mobile device is moved.
-let accChangeX = 0;
-let accChangeY = 0;
-
-// accChangeT will be used to calculate the overall change
-// for the mobile device's position.
-let accChangeT = 0;
+function preload() {
+  // Load the music file from the project root.
+  music = loadSound("beat.mp3");
+}
 
 function setup() {
-  describe(
-    'Twenty circles that bounce around in the canvas whenever the mobile device is tilted.'
+  const canvas = createCanvas(
+    max(200, windowWidth - 32),
+    max(320, windowHeight * 0.55)
   );
 
-  // Create a canvas that fills the entire viewport display.
-  createCanvas(displayWidth, displayHeight);
+  canvas.parent("canvas-holder");
 
-  // Create 20 instances of the Ball class.
-  for (let i = 0; i < 20; i++) {
+  // Describe the animation for assistive technology.
+  describe(
+    "Colourful circles bounce around a dark blue canvas. Their sizes react to music volume. Clicking the canvas changes their colours and speeds."
+  );
+
+  // Analyse the volume of the music.
+  analyzer = new p5.Amplitude();
+  analyzer.setInput(music);
+
+  // Create the bouncing circles.
+  for (let i = 0; i < numberOfBalls; i++) {
     balls.push(new Ball());
   }
+
+  // Connect the button to the music controls.
+  const button = document.getElementById("music-button");
+  const status = document.getElementById("music-status");
+
+  button.addEventListener("click", async function () {
+    try {
+      await userStartAudio();
+
+      if (music.isPlaying()) {
+        music.pause();
+
+        button.textContent = "Play Music";
+        status.textContent = "Music is paused.";
+      } else {
+        music.loop();
+
+        button.textContent = "Pause Music";
+        status.textContent = "Music is playing.";
+      }
+    } catch (error) {
+      status.textContent =
+        "Audio could not start. Please check the music file and try again.";
+
+      console.error("Audio playback error:", error);
+    }
+  });
 }
 
 function draw() {
-  background(0);
+  background(12, 20, 48);
 
-  // For each ball created, move the ball
-  // in response to the measurements gathered
-  // by the checkForShake() function.
-  for (let i = 0; i < balls.length; i++) {
-    balls[i].move();
-    balls[i].display();
+  // Read the current music volume.
+  const volume = analyzer.getLevel();
+
+  // Animate and display each circle.
+  for (let ball of balls) {
+    ball.move();
+    ball.bounce();
+    ball.display(volume);
   }
-  checkForShake();
 }
 
-function checkForShake() {
-  // Calculate the total change for accelerationX and accelerationY.
-  accChangeX = abs(accelerationX - pAccelerationX);
-  accChangeY = abs(accelerationY - pAccelerationY);
-
-  // Calculate the overall change in the mobile device's acceleration.
-  accChangeT = accChangeX + accChangeY;
-
-  // If the overall change meets or is greater than the threshold,
-  // call the shake() and turn() methods and change the direction
-  // and speed of each ball.
-  if (accChangeT >= threshold) {
-    for (let i = 0; i < balls.length; i++) {
-      balls[i].shake();
-      balls[i].turn();
-    }
-  }
-  // If the overall change doesn't meet the threshold,
-  // gradually slow down the ball movement.
-  else {
-    for (let i = 0; i < balls.length; i++) {
-      balls[i].stopShake();
-      balls[i].turn();
-      balls[i].move();
+function mousePressed() {
+  // Change the circles only when the canvas is clicked.
+  if (
+    mouseX >= 0 &&
+    mouseX <= width &&
+    mouseY >= 0 &&
+    mouseY <= height
+  ) {
+    for (let ball of balls) {
+      ball.change();
     }
   }
 }
 
-// Create the Ball class.
+function windowResized() {
+  // Resize the canvas when the browser window changes.
+  resizeCanvas(
+    max(200, windowWidth - 32),
+    max(320, windowHeight * 0.55)
+  );
+
+  // Keep existing circles inside the resized canvas.
+  for (let ball of balls) {
+    ball.x = constrain(ball.x, 0, width);
+    ball.y = constrain(ball.y, 0, height);
+  }
+}
+
 class Ball {
   constructor() {
-    // Make each ball created have a random size, speed, and starting
-    // placement in the canvas.
     this.x = random(width);
     this.y = random(height);
-    this.diameter = random(10, 30);
-    this.xspeed = random(-2, 2);
-    this.yspeed = random(-2, 2);
-    this.direction = 0.7;
 
-    // oxspeed will be used to calculate the decrease in speed in the
-    // stopShake() method.
-    this.oxspeed = this.xspeed;
-    this.oyspeed = this.yspeed;
+    this.diameter = random(14, 36);
+
+    this.xSpeed = random(-2, 2);
+    this.ySpeed = random(-2, 2);
+
+    this.colour = color(
+      random(100, 256),
+      random(100, 256),
+      random(150, 256)
+    );
   }
 
-  // Whenever the ball's move() method is called,
-  // multiply its speed and direction of movement
-  // and have that equal its new placement in the canvas.
   move() {
-    this.x += this.xspeed * this.direction;
-    this.y += this.yspeed * this.direction;
+    this.x += this.xSpeed;
+    this.y += this.ySpeed;
   }
 
-  // If the ball ever touches the edge of the canvas,
-  // have it bounce off the edge.
-  turn() {
-    if (this.x < 0) {
-      this.x = 0;
-      this.direction = -this.direction;
-    } else if (this.y < 0) {
-      this.y = 0;
-      this.direction = -this.direction;
-    } else if (this.x > width - 20) {
-      this.x = width - 20;
-      this.direction = -this.direction;
-    } else if (this.y > height - 20) {
-      this.y = height - 20;
-      this.direction = -this.direction;
+  bounce() {
+    const radius = this.diameter / 2;
+
+    // Bounce against the left and right edges.
+    if (
+      this.x < radius ||
+      this.x > width - radius
+    ) {
+      this.xSpeed *= -1;
+
+      this.x = constrain(
+        this.x,
+        radius,
+        width - radius
+      );
+    }
+
+    // Bounce against the top and bottom edges.
+    if (
+      this.y < radius ||
+      this.y > height - radius
+    ) {
+      this.ySpeed *= -1;
+
+      this.y = constrain(
+        this.y,
+        radius,
+        height - radius
+      );
     }
   }
 
-  // Whenever the ball's shake() method is called,
-  // add to the speed of the ball based on
-  // the change in the accelerationX value.
-  shake() {
-    this.xspeed += random(5, accChangeX / 3);
-    this.yspeed += random(5, accChangeX / 3);
+  display(volume) {
+    noStroke();
+    fill(this.colour);
+
+    // Louder music makes the circles larger.
+    const pulse = volume * 180;
+    const size = this.diameter + pulse;
+
+    circle(this.x, this.y, size);
   }
 
-  // Whenever the ball's stopShake() method is called,
-  // gradually slow down its speed.
-  stopShake() {
-    if (this.xspeed > this.oxspeed) {
-      this.xspeed -= 0.6;
-    } else {
-      this.xspeed = this.oxspeed;
-    }
-    if (this.yspeed > this.oyspeed) {
-      this.yspeed -= 0.6;
-    } else {
-      this.yspeed = this.oyspeed;
-    }
-  }
+  change() {
+    // Generate a new random colour.
+    this.colour = color(
+      random(100, 256),
+      random(100, 256),
+      random(150, 256)
+    );
 
-  // Draw the ball on the canvas, given its randomized diameter
-  // and current coordinates calculated with the methods listed above.
-  display() {
-    ellipse(this.x, this.y, this.diameter, this.diameter);
+    // Change the direction and speed.
+    this.xSpeed = random(-5, 5);
+    this.ySpeed = random(-5, 5);
+
+    // Prevent almost stationary movement.
+    if (abs(this.xSpeed) < 1) {
+      this.xSpeed = 2;
+    }
+
+    if (abs(this.ySpeed) < 1) {
+      this.ySpeed = -2;
+    }
   }
 }
