@@ -1,18 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <script src="https://cdn.jsdelivr.net/npm/p5@2.3.4/lib/p5.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5.sound@0.4.1/dist/p5.sound.min.js"></script>
-    
-    
-    
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  </head>
-  <body>
-    <main>
-    </main>
-    <script src="sketch.js"></script>
-  </body>
+  <title>Music-Reactive Bouncing Balls</title>
+
+  <meta
+    name="description"
+    content="An interactive creative coding experiment exploring the relationship between sound, movement and colour."
+  >
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- p5.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.min.js"></script>
+
+  <!-- Matching p5.sound library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/addons/p5.sound.min.js"></script>
+
+  <!-- My creative coding project -->
+  <script src="sketch.js" defer></script>
+</head>
+
+<body>
+  <header class="page-header">
+    <p class="eyebrow">COMM2754 · CREATIVE CODING</p>
+
+    <h1>Music-Reactive Bouncing Balls</h1>
+
+    <p class="introduction">
+      Explore the relationship between sound, movement and colour.
+      Play the music, watch the circles react, and click the canvas
+      to change their behaviour.
+    </p>
+  </header>
+
+  <main>
+    <section class="controls" aria-label="Music controls">
+      <button id="music-button" type="button">
+        Play Music
+      </button>
+
+      <p id="music-status" aria-live="polite">
+        Music is paused. Press Play Music to begin.
+      </p>
+    </section>
+
+    <section class="artwork" aria-label="Interactive animation">
+      <div id="canvas-holder"></div>
+    </section>
+
+    <section class="instructions">
+      <h2>How to interact</h2>
+
+      <ul>
+        <li>Press Play Music to start the music.</li>
+        <li>Watch the circles change size with the music volume.</li>
+        <li>Click inside the animation to change colours and speeds.</li>
+        <li>Press Pause Music to pause the sound.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made with HTML, CSS, JavaScript and p5.js.</p>
+  </footer>
+</body>
 </html>
