@@ -1,159 +1,37 @@
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  min-height: 100%;
-  background: #0c1430;
-}
-
 body {
   margin: 0;
-  min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #f4f5ff;
-  background: #0c1430;
-  line-height: 1.6;
-}
-
-.page-header {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 42px 24px 20px;
+  padding: 30px 15px;
+  background-color: #0c1430;
+  color: white;
+  font-family: Arial, sans-serif;
   text-align: center;
-}
-
-.eyebrow {
-  margin: 0 0 12px;
-  color: #a9b9ff;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 2px;
 }
 
 h1 {
-  margin: 0 0 16px;
-  font-size: clamp(28px, 5vw, 46px);
-  line-height: 1.2;
+  color: #a9b9ff;
+  font-size: 32px;
 }
 
-.introduction {
-  max-width: 650px;
-  margin: 0 auto;
-  color: #c8cde2;
-  font-size: 16px;
-}
-
-.controls {
-  padding: 18px 16px 12px;
-  text-align: center;
-}
-
-#music-button {
-  padding: 12px 30px;
-  border: 2px solid #a9b9ff;
-  border-radius: 30px;
-  background: #a9b9ff;
-  color: #0c1430;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-#music-button:hover {
-  background: #ffffff;
-  border-color: #ffffff;
-  transform: translateY(-2px);
-}
-
-#music-button:focus-visible {
-  outline: 3px solid #ffffff;
-  outline-offset: 4px;
-}
-
-#music-status {
-  min-height: 24px;
-  margin: 12px 0 0;
-  color: #c8cde2;
-  font-size: 13px;
-}
-
-.artwork {
-  width: 100%;
-  padding: 0 16px;
+p {
+  line-height: 1.6;
 }
 
 #canvas-holder {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  overflow: hidden;
-  border: 1px solid #29365e;
-  border-radius: 14px;
-  background: #0c1430;
+  max-width: 800px;
+  margin: 25px auto;
 }
 
-#canvas-holder canvas {
+canvas {
   display: block;
   max-width: 100%;
+  height: auto;
+  border: 1px solid #35436c;
 }
 
-.instructions {
-  max-width: 760px;
-  margin: 30px auto;
-  padding: 0 24px;
-}
-
-.instructions h2 {
-  margin-bottom: 10px;
+.note {
   color: #a9b9ff;
-  font-size: 21px;
+  font-size: 13px;
 }
 
-.instructions ul {
-  padding-left: 22px;
-  color: #d5d9ec;
-}
-
-.instructions li {
-  margin-bottom: 8px;
-}
-
-footer {
-  padding: 20px 16px;
-  border-top: 1px solid #29365e;
-  color: #aeb6d1;
-  font-size: 12px;
-  text-align: center;
-}
-
-@media (max-width: 600px) {
-  .page-header {
-    padding: 30px 18px 14px;
-  }
-
-  .introduction {
-    font-size: 14px;
-  }
-
-  .artwork {
-    padding: 0 8px;
-  }
-
-  #canvas-holder {
-    border-radius: 8px;
-  }
-
-  .instructions {
-    margin: 24px auto;
-    padding: 0 20px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #music-button {
-    transition: none;
-  }
-}
