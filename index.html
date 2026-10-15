@@ -5,31 +5,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Music and Circle</title>
+  <title>Music-Reactive Bouncing Balls</title>
+
+  <meta
+    name="description"
+    content="An interactive creative coding experiment exploring the relationship between sound, movement and colour."
+  >
 
   <link rel="stylesheet" href="style.css">
 
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/p5.js"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.0/addons/p5.sound.min.js"></script>
+
   <script src="sketch.js" defer></script>
 </head>
 
 <body>
-  <h1>Music and Circle</h1>
+  <header class="page-header">
+    <p class="eyebrow">COMM2754 · CREATIVE CODING</p>
 
-  <p>
-    Click the canvas to play or stop the music.
-    Watch the circle change size with the sound.
-  </p>
+    <h1>Music-Reactive Bouncing Balls</h1>
 
-  <div id="canvas-holder"></div>
+    <p class="introduction">
+      Explore the relationship between sound, movement and colour.
+      Play the music, watch the circles react, and click the canvas
+      to change their behaviour.
+    </p>
+  </header>
 
-  <p class="note">
-    Made with p5.js
-  </p>
+  <main>
+    <section class="controls" aria-label="Music controls">
+      <button id="music-button" type="button">
+        Play Music
+      </button>
+
+      <p id="music-status" aria-live="polite">
+        Music is paused. Press Play Music to begin.
+      </p>
+    </section>
+
+    <section class="artwork" aria-label="Interactive animation">
+      <div id="canvas-holder"></div>
+    </section>
+
+    <section class="instructions">
+      <h2>How to interact</h2>
+
+      <ul>
+        <li>Press Play Music to start the music.</li>
+        <li>Watch the circles change size with the music volume.</li>
+        <li>Click inside the animation to change colours and speeds.</li>
+        <li>Press Pause Music to pause the sound.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made with HTML, CSS, JavaScript and p5.js.</p>
+  </footer>
 </body>
 </html>
+
 
 
      
