@@ -1,32 +1,34 @@
-
 * {
   box-sizing: border-box;
 }
 
 html {
   min-height: 100%;
-  background: #0c1430;
 }
 
 body {
   margin: 0;
-  min-height: 100vh;
+  padding: 0;
+  background-color: #0c1430;
+  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
-  color: #f4f5ff;
-  background: #0c1430;
   line-height: 1.6;
 }
 
+
+
+
 .page-header {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 42px 24px 20px;
+  padding: 40px 24px 24px;
   text-align: center;
 }
 
 .eyebrow {
   margin: 0 0 12px;
-  color: #a9b9ff;
+  color: #aebcff;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 2px;
@@ -34,126 +36,80 @@ body {
 
 h1 {
   margin: 0 0 16px;
-  font-size: clamp(28px, 5vw, 46px);
+  font-size: clamp(28px, 5vw, 44px);
   line-height: 1.2;
+  color: #ffffff;
 }
 
 .introduction {
   max-width: 650px;
   margin: 0 auto;
-  color: #c8cde2;
+  color: #c5cbe0;
   font-size: 16px;
 }
 
-.controls {
-  padding: 18px 16px 12px;
-  text-align: center;
-}
 
-#music-button {
-  padding: 12px 30px;
-  border: 2px solid #a9b9ff;
-  border-radius: 30px;
-  background: #a9b9ff;
-  color: #0c1430;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
 
-#music-button:hover {
-  background: #ffffff;
-  border-color: #ffffff;
-  transform: translateY(-2px);
-}
-
-#music-button:focus-visible {
-  outline: 3px solid #ffffff;
-  outline-offset: 4px;
-}
-
-#music-status {
-  min-height: 24px;
-  margin: 12px 0 0;
-  color: #c8cde2;
-  font-size: 13px;
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 16px 40px;
 }
 
 .artwork {
   width: 100%;
-  padding: 0 16px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #303d69;
+  border-radius: 12px;
+  background-color: #0c1430;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 #canvas-holder {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  overflow: hidden;
-  border: 1px solid #29365e;
-  border-radius: 14px;
-  background: #0c1430;
+  line-height: 0;
 }
 
 #canvas-holder canvas {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
-.instructions {
-  max-width: 760px;
-  margin: 30px auto;
-  padding: 0 24px;
-}
-
-.instructions h2 {
-  margin-bottom: 10px;
-  color: #a9b9ff;
-  font-size: 21px;
-}
-
-.instructions ul {
-  padding-left: 22px;
-  color: #d5d9ec;
-}
-
-.instructions li {
-  margin-bottom: 8px;
-}
 
 footer {
-  padding: 20px 16px;
-  border-top: 1px solid #29365e;
-  color: #aeb6d1;
-  font-size: 12px;
+  padding: 20px 16px 28px;
   text-align: center;
+  color: #929dbd;
+  font-size: 13px;
 }
+
+footer p {
+  margin: 0;
+}
+
+
 
 @media (max-width: 600px) {
   .page-header {
-    padding: 30px 18px 14px;
+    padding: 28px 18px 20px;
   }
 
   .introduction {
     font-size: 14px;
   }
 
-  .artwork {
-    padding: 0 8px;
+  main {
+    padding: 12px 10px 28px;
   }
 
-  #canvas-holder {
+  .artwork {
     border-radius: 8px;
   }
 
-  .instructions {
-    margin: 24px auto;
-    padding: 0 20px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #music-button {
-    transition: none;
+  footer {
+    padding-top: 16px;
   }
 }
